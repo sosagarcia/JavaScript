@@ -123,3 +123,8 @@ body {
 .alert:hover {
   opacity: 1;
 }
+
+.margenes {
+  margin-top: 100px;
+  margin-left: 4px;
+}

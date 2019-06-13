@@ -1,0 +1,34 @@
+{% extends "layout1.html" %}
+
+{% block conten %}
+
+{% with messages = get_flashed_messages() %}
+{% if messages  %}
+{% for message in messages %}
+<p>{{ message }}</p>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+
+
+<div class="login-box">
+    <img src="../static/img/logo.png" class="avatar" alt="Avatar Image">
+    <h1>Registro de usuario</h1>
+    <form action="/add_contact" method="POST">
+
+        <input type="text" name="fullname" placeholder="Nombre Completo">
+        <input type="text" name="phone" placeholder="Nº de Teléfono">
+        <input type="text" name="email" placeholder="Email">
+        <input type="password" name="pass" placeholder="Contraseña">
+        <input type="submit" value="Guardar">
+
+    </form>
+
+
+</div>
+<a class="boton" href="lista" role="button">Lista de Contactos</a>
+<a class="boton1" href="/"> Actualizar</a>
+
+
+{% endblock %}

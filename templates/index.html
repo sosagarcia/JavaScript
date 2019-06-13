@@ -1,27 +1,18 @@
 {% extends "layout1.html" %}
 
 {% block conten %}
-{% for ejemplo in ejemplo %}
 
-<div class="card text-white bg-dark mb-3 " style="max-width: 20rem;">
-    <div class="card-header">{{ejemplo.titulo}}</div>
-    <div class="card-body">
-        <h4 class="card-title">{{ejemplo.author}} dice:</h4>
-        <p class="card-text">{{ejemplo.mensaje}}</p>
-    </div>
-</div>
-{% endfor %}
 
 <div class="login-box">
     <img src="../static/img/logo.png" class="avatar" alt="Avatar Image">
     <h1>Inicio de sesión</h1>
-    <form>
+    <form action="/login" method="POST">
         <!-- USERNAME INPUT -->
-        <label for="username">Nombre de usuario</label>
-        <input type="text" placeholder="Usuario">
+        <label for="email">Email</label>
+        <input type="text" placeholder="Email" name="email">
         <!-- PASSWORD INPUT -->
         <label for="password">Contraseña</label>
-        <input type="password" placeholder="Contraseña">
+        <input type="password" placeholder="Contraseña" name="password">
         <input type="submit" value="Iniciar">
         <a href="#">He olvidado mi contraseña</a><br>
         <a href="registro">No tengo una cuenta </a>
@@ -31,8 +22,6 @@
 </div>
 <a class="boton" href="main"> Acceder</a>
 <a class="boton1" href="/"> Actualizar</a>
-
-
 
 
 
