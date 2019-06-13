@@ -132,7 +132,7 @@ def add_contact():
         email = request.form['email']
         password = request.form['pass'].encode('utf-8')
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
-        cur = mysql.connection.cursor()
+        cur = mysql.connection.cursor(MySQLdb.cursor.DictCursor)
         cur.execute(
             'INSERT INTO contacts (fullname, phone, email, pass) VALUES(%s, %s, %s, %s)', (fullname, phone, email, hash_password))
         mysql.connection.commit()
