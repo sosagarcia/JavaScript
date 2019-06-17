@@ -1,28 +1,49 @@
-{% extends "layout1.html" %}
+{% extends "layout1.html" %} {% block conten %}
 
-{% block conten %}
+<div class="wrapper fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
 
+    <!-- Icon -->
+    <div class="fadeIn first">
+      {% for mensaje in mensaje %}
+      <div class="card text-white bg-{{ mensaje.tipo }} mb-3 ">
+        <div class="card-header">{{ mensaje.titulo }}</div>
+        <div class="card-body">
+          <h4 class="card-title">{{ mensaje.author }}</h4>
+          <p class="card-text">{{ mensaje.mensaje }}</p>
+        </div>
 
-<div class="login-box">
-    <img src="../static/img/logo.png" class="avatar" alt="Avatar Image">
-    <h1>Inicio de sesión</h1>
-    <form action="/login" method="POST">
-        <!-- USERNAME INPUT -->
-        <label for="email">Email</label>
-        <input type="text" placeholder="Email" name="email">
-        <!-- PASSWORD INPUT -->
-        <label for="password">Contraseña</label>
-        <input type="password" placeholder="Contraseña" name="password">
-        <input type="submit" value="Iniciar">
-        <a href="#">He olvidado mi contraseña</a><br>
-        <a href="registro">No tengo una cuenta </a>
-    </form>
+        {% endfor %}
+      </div>
 
+      <!-- Login Form -->
+      <form action="/login" method="POST">
+        <input
+          type="text"
+          id="login"
+          class="fadeIn second"
+          name="email"
+          placeholder="Email"
+        />
+        <input
+          type="password"
+          id="password"
+          class="fadeIn third"
+          name="password"
+          placeholder="Contraseña"
+        />
+        <input type="submit" class="fadeIn fourth" value="Iniciar" />
+      </form>
 
+      <!-- Remind Passowrd -->
+      <div id="formFooter">
+        <a class="underlineHover" href="#">¿Ha olvidado su contraseña?</a>
+      </div>
+      <div id="formFooter">
+        <a class="underlineHover" href="registro">Crear una cuenta</a>
+      </div>
+    </div>
+  </div>
 </div>
-<a class="boton" href="main"> Acceder</a>
-<a class="boton1" href="/"> Actualizar</a>
-
-
-
 {% endblock %}

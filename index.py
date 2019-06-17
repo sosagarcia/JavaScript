@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, request, url_for, redirect, flash, session
 from flask_mysqldb import MySQL, MySQLdb
 import bcrypt
@@ -5,16 +6,62 @@ import bcrypt
 inicio = [
     {
         'author': 'Bienvenido',
-        'titulo': 'Trabajo de Fin de Grado',
-        'mensaje': 'Por favor, inicie sesión para entrar al portal'
+        'titulo': 'INICIO DE SESIÓN',
+        'mensaje': 'Por favor, inicie sesión para entrar al portal con su usuario y contraseña',
+        'tipo': 'primary'
     }
 ]
 
-ejemploDiccionario = [
+reg = [
     {
-        'author': 'Renato Sosa García',
-        'titulo': 'Trabajo de Fin de Grado',
-        'mensaje': 'Buenos días!'
+        'author': 'Nuevo Registro',
+        'titulo': 'INICIO DE SESIÓN',
+        'mensaje': 'Por favor, rellene los siguientes campos',
+        'tipo': 'primary'
+    }
+]
+
+adios = [
+    {
+        'author': 'Bienvenido',
+        'titulo': 'Cierre de sesión correcto',
+        'mensaje': 'Por favor, inicie sesión para entrar al portal con su usuario y contraseña',
+        'tipo': 'dark'
+    }
+]
+
+contra = [
+    {
+        'author': 'Error al iniciar sesión',
+        'titulo': 'ERROR',
+        'mensaje': 'La contraseña que ha introducido es incorrecta.',
+        'tipo': 'danger'
+    }
+]
+usu = [
+    {
+        'author': 'Error al iniciar sesión',
+        'titulo': 'ERROR',
+        'mensaje': 'El email email introducido es incorrecto.',
+        'tipo': 'danger'
+    }
+]
+
+coincide = [
+    {
+        'author': 'Las contraseñas no coinciden',
+        'titulo': 'Error al crear la cuenta',
+        'mensaje': '',
+        'tipo': 'danger'
+    }
+]
+
+vacio = [
+    {
+        'author': 'Todos los campos son obligatorios',
+        'titulo': 'Error al crear la cuenta',
+        'mensaje': 'Se deben de rellenar todos los campos para poder registrar una cuenta',
+        'tipo': 'danger'
     }
 ]
 
@@ -35,7 +82,7 @@ app.secret_key = 'mysecretkey'
 @app.route('/')
 def home():
 
-    return render_template('index.html', ejemplo=ejemploDiccionario)
+    return render_template('index.html', mensaje=inicio)
 
 
 @app.route('/main')
@@ -54,27 +101,30 @@ def login():
         print(user)
         cur.close()
 
-        if len(user) > 0:
+        if user is None:
 
+            return render_template("index.html", mensaje=usu)
+        else:
             if bcrypt.checkpw(password, user[4].encode('utf-8')):
                 session['name'] = user[1]
                 session['email'] = user[3]
                 return render_template("main.html")
-        else:
-            return "Error : Contraseña o email incorrectos"
+            else:
+                return render_template("index.html", mensaje=contra)
+
     else:
-        return render_template("index.html", ejemplo=inicio)
+        return render_template("index.html", mensaje=inicio)
 
 
 @app.route('/logout')
 def logout():
-    return render_template('index.html')
+    return render_template('index.html', mensaje=adios)
     session['name'] = ""
 
 
 @app.route('/registro')
 def registro():
-    return render_template('registro.html', title='Registro')
+    return render_template('registro.html', title='Registro', mensaje=reg)
 
 
 @app.route('/delete/<string:id>')
@@ -134,13 +184,19 @@ def add_contact():
         phone = request.form['phone']
         email = request.form['email']
         password = request.form['pass'].encode('utf-8')
-        hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
-        cur = mysql.connection.cursor()
-        cur.execute(
-            'INSERT INTO contacts (fullname, phone, email, password) VALUES(%s, %s, %s, %s)', (fullname, phone, email, hash_password))
-        mysql.connection.commit()
-        flash('El contacto ha sido agregado correctamente ')
-        return redirect(url_for('lista'))
+        repassword = request.form['repass'].encode('utf-8')
+        if len(fullname and phone and email and password and repassword) == 0:
+            return render_template('registro.html', title='Registro', mensaje=vacio)
+        elif password != repassword:
+            return render_template('registro.html', title='Registro', mensaje=coincide)
+        else:
+            hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
+            cur = mysql.connection.cursor()
+            cur.execute(
+                'INSERT INTO contacts (fullname, phone, email, password) VALUES(%s, %s, %s, %s)', (fullname, phone, email, hash_password))
+            mysql.connection.commit()
+            flash('El contacto ha sido agregado correctamente ')
+            return redirect(url_for('lista'))
 
 
 if __name__ == '__main__':
