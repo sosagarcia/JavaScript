@@ -2,68 +2,8 @@
 from flask import Flask, render_template, request, url_for, redirect, flash, session
 from flask_mysqldb import MySQL, MySQLdb
 import bcrypt
-
-inicio = [
-    {
-        'author': 'Bienvenido',
-        'titulo': 'INICIO DE SESIÓN',
-        'mensaje': 'Por favor, inicie sesión para entrar al portal con su usuario y contraseña',
-        'tipo': 'primary'
-    }
-]
-
-reg = [
-    {
-        'author': 'Nuevo Registro',
-        'titulo': 'INICIO DE SESIÓN',
-        'mensaje': 'Por favor, rellene los siguientes campos',
-        'tipo': 'primary'
-    }
-]
-
-adios = [
-    {
-        'author': 'Bienvenido',
-        'titulo': 'Cierre de sesión correcto',
-        'mensaje': 'Por favor, inicie sesión para entrar al portal con su usuario y contraseña',
-        'tipo': 'dark'
-    }
-]
-
-contra = [
-    {
-        'author': 'Error al iniciar sesión',
-        'titulo': 'ERROR',
-        'mensaje': 'La contraseña que ha introducido es incorrecta.',
-        'tipo': 'danger'
-    }
-]
-usu = [
-    {
-        'author': 'Error al iniciar sesión',
-        'titulo': 'ERROR',
-        'mensaje': 'El email email introducido es incorrecto.',
-        'tipo': 'danger'
-    }
-]
-
-coincide = [
-    {
-        'author': 'Las contraseñas no coinciden',
-        'titulo': 'Error al crear la cuenta',
-        'mensaje': '',
-        'tipo': 'danger'
-    }
-]
-
-vacio = [
-    {
-        'author': 'Todos los campos son obligatorios',
-        'titulo': 'Error al crear la cuenta',
-        'mensaje': 'Se deben de rellenar todos los campos para poder registrar una cuenta',
-        'tipo': 'danger'
-    }
-]
+from static.py.mensajes import *
+from static.py.funciones import *
 
 app = Flask(__name__)
 
@@ -190,13 +130,19 @@ def add_contact():
         elif password != repassword:
             return render_template('registro.html', title='Registro', mensaje=coincide)
         else:
-            hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
             cur = mysql.connection.cursor()
-            cur.execute(
-                'INSERT INTO contacts (fullname, phone, email, password) VALUES(%s, %s, %s, %s)', (fullname, phone, email, hash_password))
-            mysql.connection.commit()
-            flash('El contacto ha sido agregado correctamente ')
-            return redirect(url_for('lista'))
+            cur.execute("SELECT * FROM contacts WHERE email = %s", (email,))
+            user = cur.fetchone()
+            if user is not None:
+                return render_template('registro.html', title='Registro', mensaje=usua)
+            else:
+                hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
+                cur = mysql.connection.cursor()
+                cur.execute(
+                    'INSERT INTO contacts (fullname, phone, email, password) VALUES(%s, %s, %s, %s)', (fullname, phone, email, hash_password))
+                mysql.connection.commit()
+                flash('El contacto ha sido agregado correctamente ')
+                return redirect(url_for('lista'))
 
 
 if __name__ == '__main__':
