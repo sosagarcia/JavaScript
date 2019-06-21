@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, url_for, redirect, flash, ses
 from flask_mysqldb import MySQL, MySQLdb
 import bcrypt
 from static.py.mensajes import *
-from static.py.funciones import *
+
 
 app = Flask(__name__)
 
@@ -156,3 +156,5 @@ if __name__ == '__main__':
 # https://www.youtube.com/watch?v=QnDWIZuWYW0&list=PL-osiE80TeTs4UjLw5MM6OjgkjFeUxCYH&index=2
 # alertas : https://www.youtube.com/watch?v=raqN7Il3Tr0
 # login : https://www.youtube.com/watch?v=fOj16SIa02U
+#Camera : https://projects.raspberrypi.org/en/projects/getting-started-with-picamera/5
+# Configuración apache2 para el py : /etc/apache2/sites-available/TFT.conf (cambiar ip correspondiente)
