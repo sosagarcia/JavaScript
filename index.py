@@ -156,4 +156,4 @@ if __name__ == '__main__':
 # login : https://www.youtube.com/watch?v=fOj16SIa02U
 # Camera : https://projects.raspberrypi.org/en/projects/getting-started-with-picamera/5
 # Configuracion apache2 para el py : /etc/apache2/sites-available/TFT.conf (cambiar ip correspondiente)
-# mysql en rapi https://www.youtube.com/watch?v=axceWuN0en0
+# mysql en rapi https://www.youtube.com/watch?v=axceWuN0en0 / https://stackoverflow.com/questions/45628814/how-do-you-install-mysql-for-flask
